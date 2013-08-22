@@ -64,7 +64,7 @@ namespace NN{
             }
             return new KokhonenNN(result, neurons);
         }
-        template<typename T> void Study(const std::vector<T> & input, uint32_t correct, bool check = true){
+        template<typename T> void Study(const std::vector<T> & input, uint32_t correct, bool check = true, uint8_t repeat = 0){
             if(check){
                 this->ProcessInput(input);
                 auto res = this->GetMaximum();
@@ -75,8 +75,12 @@ namespace NN{
             }
             auto &w = W[correct];
             for(uint32_t i = 0; i < inputs; ++ i) {
-                w[i] = w[i] + 0.02*(input[i] - w[i]);
+                w[i] = w[i] + 0.00016*(input[i] - w[i]);
             }
+            if(!repeat){
+                return;
+            }
+            return Study(input,correct,repeat-1);
         }
     };
 }
