@@ -75,7 +75,7 @@ namespace NN{
             }
             auto &w = W[correct];
             for(uint32_t i = 0; i < inputs; ++ i) {
-                w[i] = w[i] + 0.5*(input[i] - w[i]);
+                w[i] = w[i] + 0.02*(input[i] - w[i]);
             }
         }
     };
