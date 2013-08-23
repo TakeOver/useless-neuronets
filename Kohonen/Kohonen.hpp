@@ -64,6 +64,20 @@ namespace NN{
             }
             return new KohonenNN(result, neurons);
         }
+        static KohonenNN* createWithFixedWeights(uint32_t inputs, uint32_t outputs,double w){
+            decltype(W) result;
+            for ( uint32_t i = 0; i < outputs; ++ i ){
+                result.push_back({});
+                for( uint32_t j = 0; j < inputs; ++ j){
+                    result[i].push_back(w);
+                }
+            }
+            decltype(layer) neurons;
+            for(uint32_t i = 0; i < outputs; ++ i){
+                neurons.push_back(Neuron());
+            }
+            return new KohonenNN(result, neurons);
+        }
         template<typename T> void Study(const std::vector<T> & input, uint32_t correct, bool check = true, uint8_t repeat = 0){
             if(check){
                 this->ProcessInput(input);

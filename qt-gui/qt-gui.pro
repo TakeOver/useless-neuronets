@@ -18,7 +18,9 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     paths.h \
-    LodePNG/lodepng.h
+    LodePNG/lodepng.h\
+    Kohonen/Utils.hpp
 
 FORMS    += mainwindow.ui
 QMAKE_CXXFLAGS += -std=c++11
+

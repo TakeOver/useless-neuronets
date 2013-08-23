@@ -3,6 +3,7 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include <cmath>
 #include "./../LodePNG/lodepng.h"
 #define png_infopp_NULL (png_infopp)NULL
 #define int_p_NULL (int*)NULL
@@ -50,9 +51,9 @@
         }
         inline
         uint32_t loadDataPng(const std::string &dir, 
-                                                    const std::vector<std::string>& paths, 
-                                                    std::vector<std::vector<uint8_t>>& data,
-                                                    std::vector<uint8_t> & labels){
+                             const std::vector<std::string>& paths, 
+                             std::vector<std::vector<uint8_t>>& data,
+                             std::vector<uint8_t> & labels){
             uint32_t w,h;
             for(auto&x:paths){
                 labels.push_back(x[0]-'0');
@@ -61,6 +62,31 @@
                 data.push_back(img);
             }
             return 4*w*h;
+        }
+        // ignoring Alfa, RGB to gray scale
+        std::vector<double> NormallizePng(const std::vector<uint8_t> & img){
+            std::vector<double> res;
+            double max=0,min=1;
+            for(uint32_t i = 0; i< img.size(); i+=4){
+                res.push_back(1 - (((int)img[i]+(int)img[i+1]+(int)img[i+2])/(256.0*3.0)));
+                max = std::max(max,res.back());
+                min = std::min(min,res.back());
+            }
+            for(auto&x:res){
+                x = (x-min)/(max-min);
+            }
+            return res;
+        }
+        std::vector<uint8_t> Normallized2Png(const std::vector<double> & vec){
+            std::vector<uint8_t> res;
+            for(auto&x:vec){
+                auto y = 1 - x;
+                res.push_back(std::floor(y*255));
+                res.push_back(std::floor(y*255));
+                res.push_back(std::floor(y*255));
+                res.push_back(255);
+            }
+            return res;
         }
 
     }
