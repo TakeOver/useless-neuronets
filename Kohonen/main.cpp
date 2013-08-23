@@ -1,9 +1,9 @@
 #include "Utils.hpp"
-#include "Kokhonen.hpp"
+#include "Kohonen.hpp"
 #include "../tests/paths.h"
 int main(int argc, char const *argv[])
 {
-    auto nn = NN::KokhonenNN::createWithZeroWeights(1024, 10);
+    auto nn = NN::KohonenNN::createWithZeroWeights(1024, 10);
     std::vector<std::vector<uint8_t>> traindata,testdata;
     std::vector<uint8_t> trainlabels,testlabels;
     NN::Utils::loadData("./../tests/testDigits/",testing_paths,testdata,testlabels);
@@ -12,10 +12,10 @@ int main(int argc, char const *argv[])
     if(!in){
         for(uint16_t r = 100; r>0; --r){
             for(uint32_t i = 0; i< traindata.size(); ++ i){
-                nn->Study(traindata[i],trainlabels[i],true);
+              nn->Study(traindata[i],trainlabels[i],false);
                 nn->ResetPower();
             }
-            for(uint32_t i = 0; i< testdata.size(); ++ i){
+            for(uint32_t i = 0;false &&  i< testdata.size(); ++ i){
                 nn->Study(testdata[i],testlabels[i],true);
                 nn->ResetPower();
             }
@@ -53,7 +53,7 @@ int main(int argc, char const *argv[])
         nn->ProcessInput(testdata[i]);
         uint32_t max;
         std::wcout << (max=nn->GetMaximum()) << L"\n";
-        ok+= (max == testlabels[i]);
+        ok += (max == testlabels[i]);
         if(false && max != testlabels[i]){
             nn->Study(testdata[i],testlabels[i],false);
         }
@@ -62,6 +62,6 @@ int main(int argc, char const *argv[])
             std::wcin.get();
         }
     }
-    std::wcout << L"KokhonenNN matched " << ((100.0*ok)/testlabels.size()) << "% tests\n";
+    std::wcout << L"KohonenNN matched " << ((100.0*ok)/testlabels.size()) << "% tests\n";
     return 0;
 }

@@ -3,6 +3,7 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include "./../LodePNG/lodepng.h"
 #define png_infopp_NULL (png_infopp)NULL
 #define int_p_NULL (int*)NULL
 #include <vector>
@@ -46,6 +47,20 @@
                 data.push_back(File2Vector(dir+x));
             }
             return data;
+        }
+        inline
+        uint32_t loadDataPng(const std::string &dir, 
+                                                    const std::vector<std::string>& paths, 
+                                                    std::vector<std::vector<uint8_t>>& data,
+                                                    std::vector<uint8_t> & labels){
+            uint32_t w,h;
+            for(auto&x:paths){
+                labels.push_back(x[0]-'0');
+                std::vector<uint8_t> img;
+                lodepng::decode(img,w,h,dir+x);
+                data.push_back(img);
+            }
+            return 4*w*h;
         }
 
     }
