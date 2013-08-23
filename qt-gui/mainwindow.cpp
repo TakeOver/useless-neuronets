@@ -15,7 +15,6 @@ MainWindow::MainWindow(QWidget *parent) :
     }
     QObject::connect(ui->pathList, SIGNAL(itemClicked(QListWidgetItem*)),
                      this, SLOT(onItemClicked(QListWidgetItem*)));
-    ui->imgView->setPixmap(QPixmap("/home/TakeOver/neuronet/KohonenNN/tests/Png/train/0_0.png"));
     QObject::connect(ui->teachButton, SIGNAL(clicked()),
                      this, SLOT(onTeachClicked()));
     QObject::connect(ui->testButton, SIGNAL(clicked()),
@@ -24,13 +23,13 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 void MainWindow::onItemClicked(QListWidgetItem* wi){
-    ui->imgView->setPixmap(QPixmap("/home/TakeOver/neuronet/KohonenNN/tests/Png/train/" +wi->text()));
+    ui->imgView->setPixmap(QPixmap("./tests/Png/train/" +wi->text()));
 }
 void MainWindow::onTeachClicked(){
     unsigned int w,h;
     std::vector<unsigned char> img;
     std::string path = (ui->pathList->selectedItems()[0]->text().toStdString());
-    lodepng::decode(img,w,h,("/home/TakeOver/neuronet/KohonenNN/tests/Png/train/" + path));
+    lodepng::decode(img,w,h,("./tests/Png/train/" + path));
     unsigned char correct = path[0]-'0';
     nn->Study(img,correct);
     QMessageBox msg;
@@ -41,7 +40,7 @@ void MainWindow::onTestClicked(){
     unsigned int w,h;
     std::vector<unsigned char> img;
     std::string path = (ui->pathList->selectedItems()[0]->text().toStdString());
-    lodepng::decode(img,w,h,"/home/TakeOver/neuronet/KohonenNN/tests/Png/train/" + path);
+    lodepng::decode(img,w,h,"./tests/Png/train/" + path);
     unsigned char correct = path[0]-'0';
     nn->ProcessInput(img);
     QMessageBox msg;
