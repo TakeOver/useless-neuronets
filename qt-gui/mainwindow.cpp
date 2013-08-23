@@ -53,4 +53,5 @@ void MainWindow::onTestClicked(){
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete nn;
 }
